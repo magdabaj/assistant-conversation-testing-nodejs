@@ -555,10 +555,13 @@ class ActionsOnGoogleTestManager {
         if (!('actionsBuilderEvents' in checkedResponse.diagnostics)) {
             return true;
         }
-        // const actionsBuilderEvent = this.getLatestActionsBuilderEvent(
-        //   checkedResponse!
-        // );
-        // return 'endConversation' in actionsBuilderEvent!;
+        const actionsBuilderEvent = this.getLatestActionsBuilderEvent(checkedResponse);
+        // if (!this.getLatestActionsBuilderEvent(checkedResponse!)) return false;
+        // return !!actionsBuilderEvent;
+        console.log('checked response', checkedResponse);
+        console.log('actionsBuilderEvent', actionsBuilderEvent);
+        console.log('!!actionsBuilderEvent', !!actionsBuilderEvent);
+        // return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
         return false;
     }
     /**
