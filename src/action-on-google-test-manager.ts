@@ -950,8 +950,7 @@ export class ActionsOnGoogleTestManager {
     console.log('checked response', checkedResponse);
     console.log('actionsBuilderEvent', actionsBuilderEvent);
     console.log('!!actionsBuilderEvent', !!actionsBuilderEvent);
-    // return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
-    return false;
+    return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
   }
 
   /**
