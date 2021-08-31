@@ -942,10 +942,11 @@ export class ActionsOnGoogleTestManager {
     if (!('actionsBuilderEvents' in checkedResponse!.diagnostics!)) {
       return true;
     }
-    const actionsBuilderEvent = this.getLatestActionsBuilderEvent(
-      checkedResponse!
-    );
-    return 'endConversation' in actionsBuilderEvent!;
+    // const actionsBuilderEvent = this.getLatestActionsBuilderEvent(
+    //   checkedResponse!
+    // );
+    // return 'endConversation' in actionsBuilderEvent!;
+    return false
   }
 
   /**
