@@ -4,3 +4,4 @@ node_modules
 *.tgz
 package
 package-lock.json
+.idea
