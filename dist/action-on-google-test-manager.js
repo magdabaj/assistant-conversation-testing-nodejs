@@ -42,7 +42,11 @@ class ActionsOnGoogleTestManager {
      * Sets up all the needed objects and settings of a Suite.
      */
     constructor({ projectId, interactionParams = {}, actionsApiCustomEndpoint, }) {
-        this.latestResponse = null;
+        this.latestResponse = {
+            diagnostics: {
+                actionsBuilderEvents: [],
+            },
+        };
         this.suiteInteractionDefaults = constants.DEFAULT_INTERACTION_SETTING;
         this.testInteractionDefaults = {};
         this.lastUserQuery = null;
@@ -73,7 +77,8 @@ class ActionsOnGoogleTestManager {
         // Set the conversation token - if not the first query
         if (this.latestResponse) {
             chai_1.assert.isFalse(this.getIsConversationEnded(), 'Conversation ended unexpectedly in previous query.');
-            interactionMergeParams[constants.TOKEN_FIELD_NAME] = this.latestResponse[constants.TOKEN_FIELD_NAME];
+            interactionMergeParams[constants.TOKEN_FIELD_NAME] =
+                this.latestResponse[constants.TOKEN_FIELD_NAME];
         }
         this.lastUserQuery = interactionMergeParams.input['query'];
         this.latestResponse = await this.actionsApiHelper.sendInteraction(interactionMergeParams);
@@ -561,7 +566,8 @@ class ActionsOnGoogleTestManager {
         console.log('checked response', checkedResponse);
         console.log('actionsBuilderEvent', actionsBuilderEvent);
         console.log('!!actionsBuilderEvent', !!actionsBuilderEvent);
-        return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent;
+        return 'endConversation' in actionsBuilderEvent;
+        // return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
     }
     /**
      * Returns the value of the session param from the response.

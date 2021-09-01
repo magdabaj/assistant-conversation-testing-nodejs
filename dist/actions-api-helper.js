@@ -41,6 +41,7 @@ class ActionsApiHelper {
         try {
             interactionData.project = `projects/${this.projectId}`;
             const res = await this.actionsTestingClient.sendInteraction(interactionData);
+            console.log(res);
             return res[0];
         }
         catch (err) {

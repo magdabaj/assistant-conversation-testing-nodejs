@@ -27,8 +27,6 @@ import * as yaml from 'js-yaml';
 import {ActionsApiHelper} from './actions-api-helper';
 import * as constants from './constants';
 import {getDeepMerge} from './merge';
-import {google} from '@assistant/actions/build/protos/protos';
-import EndConversation = google.actions.sdk.v2.EndConversation;
 
 const CANNOT_BE_CALLED_BEFORE_FIRST_QUERY_MESSAGE =
   'cannot be called before first query';
