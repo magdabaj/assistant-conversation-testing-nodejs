@@ -566,8 +566,7 @@ class ActionsOnGoogleTestManager {
         console.log('checked response', checkedResponse);
         console.log('actionsBuilderEvent', actionsBuilderEvent);
         console.log('!!actionsBuilderEvent', !!actionsBuilderEvent);
-        return 'endConversation' in actionsBuilderEvent;
-        // return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
+        return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent;
     }
     /**
      * Returns the value of the session param from the response.
