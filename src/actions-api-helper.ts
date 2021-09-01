@@ -60,6 +60,7 @@ export class ActionsApiHelper {
       const res = await this.actionsTestingClient.sendInteraction(
         interactionData
       );
+      console.log(res);
       return res[0] as protos.google.actions.sdk.v2.ISendInteractionResponse;
     } catch (err) {
       throw new Error(`sendInteraction API call failed: ${err}`);

@@ -27,6 +27,8 @@ import * as yaml from 'js-yaml';
 import {ActionsApiHelper} from './actions-api-helper';
 import * as constants from './constants';
 import {getDeepMerge} from './merge';
+import {google} from '@assistant/actions/build/protos/protos';
+import EndConversation = google.actions.sdk.v2.EndConversation;
 
 const CANNOT_BE_CALLED_BEFORE_FIRST_QUERY_MESSAGE =
   'cannot be called before first query';
@@ -77,10 +79,16 @@ export interface TestSuiteConfig {
  */
 export class ActionsOnGoogleTestManager {
   actionsApiHelper: ActionsApiHelper;
-  latestResponse: protos.google.actions.sdk.v2.ISendInteractionResponse | null = null;
+  latestResponse: protos.google.actions.sdk.v2.ISendInteractionResponse | null =
+    {
+      diagnostics: {
+        actionsBuilderEvents: [],
+      },
+    };
   suiteInteractionDefaults: protos.google.actions.sdk.v2.ISendInteractionRequest =
     constants.DEFAULT_INTERACTION_SETTING;
-  testInteractionDefaults: protos.google.actions.sdk.v2.ISendInteractionRequest = {};
+  testInteractionDefaults: protos.google.actions.sdk.v2.ISendInteractionRequest =
+    {};
   lastUserQuery: string | null | undefined = null;
 
   /**
@@ -131,9 +139,8 @@ export class ActionsOnGoogleTestManager {
         this.getIsConversationEnded(),
         'Conversation ended unexpectedly in previous query.'
       );
-      interactionMergeParams[constants.TOKEN_FIELD_NAME] = this.latestResponse[
-        constants.TOKEN_FIELD_NAME
-      ];
+      interactionMergeParams[constants.TOKEN_FIELD_NAME] =
+        this.latestResponse[constants.TOKEN_FIELD_NAME];
     }
     this.lastUserQuery = interactionMergeParams.input!['query'];
     this.latestResponse = await this.actionsApiHelper.sendInteraction(
@@ -189,7 +196,8 @@ export class ActionsOnGoogleTestManager {
 
   /** Sets the default surface for the suite. */
   setSuiteSurface(surface: string) {
-    const devicePropertiesSurface = surface as keyof typeof protos.google.actions.sdk.v2.DeviceProperties.Surface;
+    const devicePropertiesSurface =
+      surface as keyof typeof protos.google.actions.sdk.v2.DeviceProperties.Surface;
     this.updateSuiteInteractionDefaults({
       deviceProperties: {surface: devicePropertiesSurface},
     });
@@ -210,7 +218,8 @@ export class ActionsOnGoogleTestManager {
    * tests that are for different surface from the suite surface.
    */
   setTestSurface(surface: string) {
-    const devicePropertiesSurface = surface as keyof typeof protos.google.actions.sdk.v2.DeviceProperties.Surface;
+    const devicePropertiesSurface =
+      surface as keyof typeof protos.google.actions.sdk.v2.DeviceProperties.Surface;
     this.updateTestInteractionDefaults({
       deviceProperties: {surface: devicePropertiesSurface},
     });
@@ -686,9 +695,8 @@ export class ActionsOnGoogleTestManager {
         testCase!.query!,
         language!
       );
-      const topMatchedIntentName = this.getTopMatchIntentFromMatchResponse(
-        matchResponse
-      );
+      const topMatchedIntentName =
+        this.getTopMatchIntentFromMatchResponse(matchResponse);
       if (topMatchedIntentName !== testCase!['expectedIntent']) {
         failedQueries.push({
           query: testCase!['query'],
@@ -950,7 +958,8 @@ export class ActionsOnGoogleTestManager {
     console.log('checked response', checkedResponse);
     console.log('actionsBuilderEvent', actionsBuilderEvent);
     console.log('!!actionsBuilderEvent', !!actionsBuilderEvent);
-    return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
+    return 'endConversation' in actionsBuilderEvent!;
+    // return !!actionsBuilderEvent || 'endConversation' in actionsBuilderEvent!;
   }
 
   /**
